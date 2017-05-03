@@ -34,12 +34,12 @@ templates themselves.
 
 General steps for usage:
 
-1. Provistion and push the CodeCommit repository using the files from the 
+1. Deploy Cloudformation template for necessary IAM service roles.
+2. Deploy Cloudformation template to build pipeline, repository and project.
+3. Provision and push the CodeCommit repository using the files from the 
  codecommit directory in this project.
-2. Deploy Cloudformation template for necessary IAM roles.
-3. Deploy Cloudformation template to build pipeline and refence created
- CodeCommit and IAM roles.
-4. Push a change or manually run CodePipeline to build a new AMI.
+4. Push a change or manually run CodePipeline to build a new AMI to the deploy
+branch on the CodeCommit repository.
 
 ### Limitations
 - CodeBuild does not run inside your VPC, which makes the Packer SSH access
