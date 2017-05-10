@@ -62,7 +62,7 @@
             "Type": "LINUX_CONTAINER"
           },
           "Source": {
-            "Type": "CODEPIPELINE",
+            "Type": "CODEPIPELINE"
           },
           "Artifacts": {
             "Type": "CODEPIPELINE"
@@ -131,11 +131,7 @@
                 }
               ]
             }
-          ],
-          "ArtifactStore": {
-            "Type": "S3",
-            "Location": { "Ref": "PipelineBucket" }
-          }
+          ]
         }
       }
     }

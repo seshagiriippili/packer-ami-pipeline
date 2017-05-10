@@ -1,11 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "AMI Builder Role Template",
+    "Parameters": {
+      "CodePipelineRoleName": {
+          "Description": "Name for the CodePipeline Role.",
+          "Type": "String",
+          "Default": "AWS-CodePipeline-Service"
+      },
+      "CodeBuildRoleName": {
+          "Description": "Name for the CodePipeline Role.",
+          "Type": "String",
+          "Default": "AWS-CodeBuild-Service"
+      }
+    },
     "Resources": {
       "CodePipelineRole": {
          "Type": "AWS::IAM::Role",
          "Properties": {
-           "RoleName": "AWS-CodePipeline-Service",
+           "RoleName":{ "Ref": "CodePipelineRoleName" },
            "AssumeRolePolicyDocument": {
            "Version" : "2012-10-17",
               "Statement": [ {
@@ -27,13 +39,13 @@
       "CodeBuildRole": {
          "Type": "AWS::IAM::Role",
          "Properties": {
-           "RoleName": "AWS-CodeBuild-Service",
+           "RoleName": { "Ref": "CodeBuildRoleName" },
            "AssumeRolePolicyDocument": {
              "Version" : "2012-10-17",
              "Statement": [ {
                 "Effect": "Allow",
                 "Principal": {
-                  "Service": "codebuild.amazonaws.com",
+                  "Service": "codebuild.amazonaws.com"
                 },
                 "Action": "sts:AssumeRole"
               } ]
