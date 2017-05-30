@@ -34,10 +34,10 @@ templates themselves.
 
 General steps for usage:
 
-1. Deploy CloudFormation template for necessary IAM service roles.
-2. Deploy CloudFormation template to build pipeline, repository and project.
+1. Deploy CloudFormation template for necessary IAM service roles. [packer-ami-pipeline-roles.template](packer-ami-pipeline-roles.template)
+2. Deploy CloudFormation template to build pipeline, repository and project. [packer-ami-pipeline.template](packer-ami-pipeline.template)
 3. Provision and push the CodeCommit repository using the files from the
- CodeCommit directory in this project.
+ CodeCommit directory in this project. [codecommit](codecommit)
 4. Push a change or manually run CodePipeline to build a new AMI to the deploy
 branch on the CodeCommit repository.
 
