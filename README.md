@@ -34,11 +34,24 @@ templates themselves.
 
 General steps for usage:
 
-1. Deploy CloudFormation template for necessary IAM service roles. [packer-ami-pipeline-roles.template](packer-ami-pipeline-roles.template)
-2. Deploy CloudFormation template to build pipeline, repository and project. [packer-ami-pipeline.template](packer-ami-pipeline.template)
+1. Deploy CloudFormation template for necessary IAM service roles. [Launch Stack](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=packer-ami-pipeline-roles&templateURL=https://raw.githubusercontent.com/rackerlabs/packer-ami-pipeline/master/packer-ami-pipeline-roles.template)
+```shell
+aws cloudformation create-stack --stack-name packer-ami-pipeline-roles --capabilities CAPABILITY_NAMED_IAM --template-url https://s3.amazonaws.com/BUCKET_NAME/packer-ami-pipeline-roles.template --parameters `
+ParameterKey=CodePipelineRoleName,ParameterValue=MY-AWS-CodePipeline-Service `
+ParameterKey=CodeBuildRoleName,ParameterValue=MY-AWS-CodeBuild-Service
+```
+2. Deploy CloudFormation template to build pipeline, repository and project. [Launch Stack](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=my-pipeline&templateURL=https://raw.githubusercontent.com/rackerlabs/packer-ami-pipeline/master/packer-ami-pipeline.template)
+```shell
+aws cloudformation create-stack --stack-name my-pipeline --template-url https://s3.amazonaws.com/BUCKET_NAME/packer-ami-pipeline.template --parameters `
+ParameterKey=RepositoryBranch,ParameterValue=deploy `
+ParameterKey=CodeBuildImage,ParameterValue=aws/codebuild/ubuntu-base:14.04 `
+ParameterKey=PipelineName,ParameterValue=MyFirstPipeline `
+ParameterKey=ProjectName,ParameterValue=MyProject `
+ParameterKey=RepositoryDescription,ParameterValue=MyPipelineDescription
+```
 3. Provision and push the CodeCommit repository using the files from the
  CodeCommit directory in this project. [codecommit](codecommit)
-4. Push a change or manually run CodePipeline to build a new AMI to the deploy
+4. Push a change or manually run CodePipeline to build a new AMI to the `deploy`
 branch on the CodeCommit repository.
 
 ### Limitations
