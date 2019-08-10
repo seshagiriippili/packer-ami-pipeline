@@ -21,4 +21,4 @@ phases:
       - echo "aws_session_token = $(cat credentials.json | jq '.Token' | sed s'/"//g')" >> ~/.aws/credentials
   build:
     commands:
-      - ./packer build "ami-stuff/packer.json"
+      - ./packer build "deploy/packer.json"

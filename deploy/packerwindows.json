@@ -15,10 +15,10 @@
     "instance_type": "t2.small",
     "ami_name": "packer-ami-pipeline-demo-{{timestamp}}",
     "winrm_username": "administrator",
-    "user_data_file":"ami-stuff/scripts/user-data.ps1"
+    "user_data_file":"deploy/scripts/user-data.ps1"
   }],
   "provisioners": [{
       "type": "powershell",
-      "scripts": [ "ami-stuff/scripts/provision.ps1" ]
+      "scripts": [ "deploy/scripts/provision.ps1" ]
     }]
 }

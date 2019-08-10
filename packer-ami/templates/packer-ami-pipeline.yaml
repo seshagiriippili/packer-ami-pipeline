@@ -2,10 +2,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AMI Builder Template
 Parameters:
+  RepositoryOwner:
+    Description: Name for Github account.
+    Type: String
+    Default: davidtpwilliams
   RepositoryName:
     Description: Name for the CodeCommit repository.
     Type: String
-    Default: ami-stuff
+    Default: packer-ami-pipeline
+  OAuthToken:
+    Description: Credentials to access repo.
+    Type: String
   RepositoryDescription:
     Description: A description to set on the CodeCommit created repository.
     Type: String
@@ -17,7 +24,7 @@ Parameters:
   RepositoryBranch:
     Description: The name of the branch to pull source from.
     Type: String
-    Default: deploy
+    Default: master
   ProjectName:
     Description: A name for the project. The name must be unique across all of the
       projects in your AWS account.
@@ -28,13 +35,6 @@ Parameters:
     Type: String
     Default: aws/codebuild/ubuntu-base:14.04
 Resources:
-  CodeCommitRepository:
-    Type: AWS::CodeCommit::Repository
-    Properties:
-      RepositoryDescription:
-        Ref: RepositoryDescription
-      RepositoryName:
-        Ref: RepositoryName
   PipelineBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -73,16 +73,16 @@ Resources:
         - Name: Source
           ActionTypeId:
             Category: Source
-            Owner: AWS
-            Version: '1'
-            Provider: CodeCommit
+            Owner: ThirdParty
+            Version: 1
+            Provider: GitHub
           Configuration:
-            BranchName:
-              Ref: RepositoryBranch
-            RepositoryName:
-              Ref: RepositoryName
+            Owner: !Ref RepositoryOwner
+            Repo: !Ref RepositoryName
+            Branch: !Ref RepositoryBranch
+            OAuthToken: !Ref OAuthToken
           OutputArtifacts:
-          - Name: ami-builder-codecommit
+          - Name: ami-builder-github
           RunOrder: 1
       - Name: Build
         Actions:
@@ -96,7 +96,7 @@ Resources:
             ProjectName:
               Ref: CodeBuildProject
           InputArtifacts:
-          - Name: ami-builder-codecommit
+          - Name: ami-builder-github
           OutputArtifacts:
           - Name: ami-builder-codebuild
           RunOrder: 1
