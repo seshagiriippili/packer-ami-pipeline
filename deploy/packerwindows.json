@@ -2,7 +2,7 @@
   "builders": [{
     "type": "amazon-ebs",
     "communicator": "winrm",
-    "region": "us-east-1",
+    "region": "ap-southeast-2",
     "source_ami_filter": {
       "filters": {
         "virtualization-type": "hvm",
