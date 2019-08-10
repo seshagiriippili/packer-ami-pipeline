@@ -1,0 +1,102 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AMI Builder Template
+Parameters:
+  RepositoryName:
+    Description: Name for the CodeCommit repository.
+    Type: String
+    Default: ami-stuff
+  RepositoryDescription:
+    Description: A description to set on the CodeCommit created repository.
+    Type: String
+    Default: AMI Builder repository stuff.
+  PipelineName:
+    Description: The name of your AWS CodePipeline pipeline.
+    Type: String
+    Default: ami-builder
+  RepositoryBranch:
+    Description: The name of the branch to pull source from.
+    Type: String
+    Default: deploy
+  ProjectName:
+    Description: A name for the project. The name must be unique across all of the
+      projects in your AWS account.
+    Type: String
+    Default: ami-builder
+  CodeBuildImage:
+    Description: The Docker image identifier that the build environment uses.
+    Type: String
+    Default: aws/codebuild/ubuntu-base:14.04
+Resources:
+  CodeCommitRepository:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryDescription:
+        Ref: RepositoryDescription
+      RepositoryName:
+        Ref: RepositoryName
+  PipelineBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name:
+        Ref: ProjectName
+      ServiceRole:
+        Fn::ImportValue: CodeBuildRoleARN
+      Environment:
+        Image:
+          Ref: CodeBuildImage
+        ComputeType: BUILD_GENERAL1_SMALL
+        Type: LINUX_CONTAINER
+      Source:
+        Type: CODEPIPELINE
+      Artifacts:
+        Type: CODEPIPELINE
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name:
+        Ref: PipelineName
+      RoleArn:
+        Fn::ImportValue: CodePipelineRoleARN
+      ArtifactStore:
+        Type: S3
+        Location:
+          Ref: PipelineBucket
+      Stages:
+      - Name: Source
+        Actions:
+        - Name: Source
+          ActionTypeId:
+            Category: Source
+            Owner: AWS
+            Version: '1'
+            Provider: CodeCommit
+          Configuration:
+            BranchName:
+              Ref: RepositoryBranch
+            RepositoryName:
+              Ref: RepositoryName
+          OutputArtifacts:
+          - Name: ami-builder-codecommit
+          RunOrder: 1
+      - Name: Build
+        Actions:
+        - Name: Build
+          ActionTypeId:
+            Category: Build
+            Owner: AWS
+            Version: '1'
+            Provider: CodeBuild
+          Configuration:
+            ProjectName:
+              Ref: CodeBuildProject
+          InputArtifacts:
+          - Name: ami-builder-codecommit
+          OutputArtifacts:
+          - Name: ami-builder-codebuild
+          RunOrder: 1
