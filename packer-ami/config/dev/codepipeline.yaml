@@ -4,7 +4,7 @@ parameters:
   RepositoryOwner: "davidtpwilliams"
   RepositoryDescription: "AMI Builder repository stuff." 
   PipelineName: "{{stack_group_config.Owner}}_ami-builder"
-  OAuthToken: "9a6af63f292f6c14baa20914f54a0ae4007aa3bd"
+  OAuthToken:  "{{stack_group_config.OAuthToken}}"
   RepositoryBranch: "master"
   ProjectName: "{{stack_group_config.Owner}}_CodeBuild"
   CodeBuildImage: "aws/codebuild/ubuntu-base:14.04"
