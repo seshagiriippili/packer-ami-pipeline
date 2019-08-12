@@ -14,7 +14,8 @@
     "instance_type": "t2.micro",
     "ssh_username": "ubuntu",
     "ssh_pty" : true,
-    "ami_name": "packer-ami-pipeline-demo-{{timestamp}}"
+    "ami_name": "packer-ami-pipeline-demo-{{timestamp}}",
+    "vpc_id": "vpc-0217eb05d39e95005"
   }],
   "provisioners": [{
     "type": "shell",
