@@ -1,4 +1,4 @@
-project_code: packer-ami
+project_code: packer-si
 region: ap-southeast-2
-Owner: "DavidWilliams"
-OAuthToken: "your token here"
+Owner: "si"
+OAuthToken: "ae2f5dceacec9ee8fd1b03e1c25d7f8c0b55f1b9"

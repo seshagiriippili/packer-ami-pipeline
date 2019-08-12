@@ -21,4 +21,5 @@ phases:
       - echo "aws_session_token = $(cat credentials.json | jq '.Token' | sed s'/"//g')" >> ~/.aws/credentials
   build:
     commands:
-      - ./packer build -var "aws_region=ap-southeast-2" "deploy/packer.json"
+#      - ./packer build -var "aws_region=ap-southeast-2" "deploy/packer.json"
+      - ./packer build -var "aws_region=ap-southeast-2" "deploy/packerwindows.json"

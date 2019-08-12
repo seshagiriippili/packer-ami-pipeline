@@ -1,7 +1,7 @@
 template_path: packer-ami-pipeline.yaml
 parameters:
   RepositoryName: "packer-ami-pipeline"
-  RepositoryOwner: "davidtpwilliams"
+  RepositoryOwner: "Seshagiriippili"
   RepositoryDescription: "AMI Builder repository stuff." 
   PipelineName: "{{stack_group_config.Owner}}_ami-builder"
   OAuthToken: "{{stack_group_config.OAuthToken}}"
