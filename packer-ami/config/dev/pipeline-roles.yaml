@@ -1,5 +1,0 @@
-template_path: packer-ami-pipeline-roles.yaml
-
-parameters:
-  CodePipelineRoleName: "{{stack_group_config.Owner}}_CodePipeLineRole"
-  CodeBuildRoleName: "{{stack_group_config.Owner}}_CodeBuildRole"
